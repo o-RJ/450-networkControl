@@ -30,6 +30,6 @@ for packet in cap:
         continue
 #we take our data list and convert it to a pandas DataFrame, with correct column names for the data to fit under
 df = pd.DataFrame(data, columns=["Timestamp", "Source IP", "Destination IP", "Source Port", "Destination Port",
-                                 "Sequence", "Acknowledge", "Window", "Flags"])
+                                 "Sequence", "Ack Number", "Window", "Flags"])
 #we take our dataframe and use the built in to_csv function to save it to a CSV file
 df.to_csv(csv_output, index=False)
