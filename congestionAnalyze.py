@@ -10,6 +10,8 @@ def analyze_congestion(csv_path):
     #we will store the congestion events in a list
     congestion_events = []
 
+    last_event = None
+
     #check the rows for congestion
     for i in range(2, len(df)):
         #triple dup
@@ -17,19 +19,24 @@ def analyze_congestion(csv_path):
             df.iloc[i]["Ack Number"] == df.iloc[i-1]["Ack Number"] == df.iloc[i-2]["Ack Number"]
             and df.iloc[i]["Sequence"] == df.iloc[i-1]["Sequence"]
         ):
-            congestion_events.append({
-                'Event': 'Triple Duplicate',
-                'Timestamp': df.iloc[i]['Timestamp'],
-                'Ack Number': df.iloc[i]['Ack Number'],
-                'Sequence': df.iloc[i]['Sequence']
-            })
-        if df.iloc[i]["Sequence"] == df.iloc[i-1]["Sequence"]:
-            congestion_events.append({
-                'Event': 'Retransmission',
-                'Timestamp': df.iloc[i]['Timestamp'],
-                'Ack Number': df.iloc[i]['Ack Number'],
-                'Sequence': df.iloc[i]['Sequence']
-            })
+            if last_event != ('Triple Duplicate', df.iloc[i]['Sequence']):
+                congestion_events.append({
+                    'Event': 'Triple Duplicate',
+                    'Timestamp': df.iloc[i]['Timestamp'],
+                    'Ack Number': df.iloc[i]['Ack Number'],
+                    'Sequence': df.iloc[i]['Sequence']
+                })
+                last_event = ('Triple Duplicate', df.iloc[i]['Sequence'])
+
+        elif df.iloc[i]["Sequence"] == df.iloc[i-1]["Sequence"]:
+            if last_event!= ('Retransmission', df.iloc[i]['Sequence']):
+                congestion_events.append({
+                    'Event': 'Retransmission',
+                    'Timestamp': df.iloc[i]['Timestamp'],
+                    'Ack Number': df.iloc[i]['Ack Number'],
+                    'Sequence': df.iloc[i]['Sequence']
+                })
+                last_event = ('Retransmission', df.iloc[i]['Sequence'])
     congestion_df = pd.DataFrame(congestion_events)
 
     congestion_csv = 'congestion_events.csv'

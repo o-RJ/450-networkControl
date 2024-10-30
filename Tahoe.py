@@ -1,13 +1,13 @@
 import pandas as pd
 def tahoe(congestion_events):
-    events = pd.read_csv('events.csv')
+    events = pd.read_csv(congestion_events)
     CWND = 1
     SSTHRESH = 64
 
     log = []
 
     for _, event in events.iterrows():
-        if event['Event'] == 'Triple Duplicate' or event['Event'] == 'Retransmission':
+        if event['Congestion Event'] == 'Triple Duplicate' or event['Congestion Event'] == 'Retransmission':
             SSTHRESH = max(CWND // 2, 1)
             CWND = 1
         elif CWND < SSTHRESH:
@@ -17,7 +17,7 @@ def tahoe(congestion_events):
 
         log.append({
             'Timestamp': event['Timestamp'],
-            'Event': event['Event'],
+            'Congestion Event': event['Congestion Event'],
             'cwnd': CWND,
             'sshthresh': SSTHRESH
         })

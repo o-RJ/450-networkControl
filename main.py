@@ -10,3 +10,7 @@ converted = "wireshark_dataframe.csv"
 analyze_congestion(converted)
 congestion_csv = "congestion_events.csv"
 add_congestion_info(converted, congestion_csv)
+
+congestion_gold = "congestion_gold.csv"
+
+tahoe(congestion_gold)
