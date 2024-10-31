@@ -8,10 +8,10 @@ def renoe(congestion_events):
     SSTHRESH = 64
 
     for _, event in events.iterrows():
-        if event['Event'] == 'Triple Duplicate':
+        if event['Congestion Event'] == 'Triple Duplicate':
             SSTHRESH = max(CWD // 2, 1)
             CWD = SSTHRESH + 3
-        elif event['Event'] == 'Retransmission':
+        elif event['Congestion Event'] == 'Retransmission':
             SSTHRESH = max(CWD // 2, 1)
             CWD = 1
         elif CWD < SSTHRESH:
@@ -21,7 +21,7 @@ def renoe(congestion_events):
 
         log.append({
             'Timestamp': event['Timestamp'],
-            'Event': event['Event'],
+            'Event': event['Congestion Event'],
             'cwnd': CWD,
             'sstresh': SSTHRESH
         })
