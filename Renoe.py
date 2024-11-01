@@ -9,14 +9,18 @@ def renoe(congestion_events):
 
     for _, event in events.iterrows():
         if event['Congestion Event'] == 'Triple Duplicate':
+            #if its a triple duplicate, we set the threshold  to half CWND, minimum 1
             SSTHRESH = max(CWD // 2, 1)
             CWD = SSTHRESH + 3
         elif event['Congestion Event'] == 'Retransmission':
             SSTHRESH = max(CWD // 2, 1)
+            #if its a retransmission we go into slow start
             CWD = 1
         elif CWD < SSTHRESH:
+            #exponential growth of congestion window
             CWD *= 2
         else:
+            #if not in slow start, increase congestion window by 1
             CWD += 1
 
         log.append({

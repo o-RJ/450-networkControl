@@ -4,9 +4,10 @@ def convert(pcap_in):
     data = []
     csv_output = "wireshark_dataframe.csv"
     pcap_in = pyshark.FileCapture(pcap_in, display_filter="tcp")
-
+    #filter our wireshark file via tcp traffic only
     for packet in pcap_in:
         try:
+            #after the filter we take only the data we need to make our analysis
             timestamp = packet.sniff_time
             src_ip = packet.ip.src
             dst_ip = packet.ip.dst

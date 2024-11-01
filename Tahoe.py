@@ -13,9 +13,10 @@ def tahoe(congestion_events):
             SSTHRESH = max(CWND // 2, 1)
             CWND = 1
         elif CWND < SSTHRESH:
-            #
+            #slow start phase, exponential growth
             CWND *= 2
         else:
+            #linear growth
             CWND += 1
 
         log.append({
