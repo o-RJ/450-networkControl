@@ -15,11 +15,11 @@ def renoe(congestion_events):
                 CWD = SSTHRESH + 3
                 in_fast_recovery = True
             else:
-                # Increment CWD by 1 for each duplicate ACK in fast recovery
+                # Increment CWD by 1 for each duplicate ACK 
                 CWD += 1
 
         elif event['Congestion Event'] == 'Retransmission': 
-            SSTHRESH = max(CWD // 2, 1)     # Timeout: Exit fast recovery, set CWD to 1, re-enter slow start
+            SSTHRESH = max(CWD // 2, 1)     # Exit fast recovery, set CWD to 1
             CWD = 1
             in_fast_recovery = False
         else:
